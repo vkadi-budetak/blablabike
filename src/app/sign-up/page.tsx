@@ -1,10 +1,11 @@
+import RegisterForm from "@/components/auth/register-form";
 import React from "react";
 
 export default function SignUp() {
   return (
     <section>
       <div>
-        <h1>Sign Up</h1>
+        <RegisterForm />
       </div>
     </section>
   );
