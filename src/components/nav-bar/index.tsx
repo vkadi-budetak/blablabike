@@ -6,6 +6,7 @@ import {
   PATH_LOGIN,
   PATH_SIGN_UP,
   USER_PROFILE,
+  USER_BOOKINGS,
 } from "@/app/path/path";
 import Logo from "@/components/nav-bar/logo-svg/Logo";
 
@@ -38,6 +39,13 @@ export default function NavBar() {
             className="text-white hover:text-[#e6ff2a] transition text-sm font-medium"
           >
             Profile
+          </Link>
+
+          <Link
+            href={USER_BOOKINGS}
+            className="text-white hover:text-[#e6ff2a] transition text-sm font-medium"
+          >
+            My Bookings
           </Link>
         </div>
         <div className="flex items-center justify-end gap-4">
