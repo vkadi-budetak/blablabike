@@ -1,3 +1,5 @@
+import { FaInstagram, FaFacebookF, FaTwitter } from "react-icons/fa";
+
 export default function Footer() {
     return (
         <footer className="p-10 bg-gray-900 text-white">
@@ -5,15 +7,15 @@ export default function Footer() {
             <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 <div>
                     <h2  className="font-semibold mb-3">Bike rental</h2>
-                    <p>The best bike rental service in your city</p>
+                    <p className="text-gray-400">The best bike rental service in your city</p>
                 </div>
 
                 <div>
                     <h3 className="mb-3">Company</h3>
                     <ul>
-                        <li>About us</li>
-                        <li>Contact</li>
-                        <li>Careers</li>
+                        <li className="text-gray-400 hover:text-white cursor-pointer">About us</li>
+                        <li className="text-gray-400 hover:text-white cursor-pointer">Contact</li>
+                        <li className="text-gray-400 hover:text-white cursor-pointer">Careers</li>
                     </ul>
                         
                 </div>
@@ -21,19 +23,19 @@ export default function Footer() {
                 <div>
                     <h3 className="mb-3">Support</h3>
                     <ul>
-                        <li>FAQ</li>
-                        <li>Terms</li>
-                        <li>Privacy</li>
+                        <li className="text-gray-400 hover:text-white cursor-pointer">FAQ</li>
+                        <li className="text-gray-400 hover:text-white cursor-pointer">Terms</li>
+                        <li className="text-gray-400 hover:text-white cursor-pointer">Privacy</li>
                     </ul>
                         
                 </div>
 
                 <div>
                     <h3 className="mb-3">Follow us</h3>
-                    <div>
-                        <p>Instagram</p>
-                        <p>Facebook</p>
-                        <p>Twitter</p>
+                    <div className="flex gap-4 text-2xl text-gray-400">
+                        <FaInstagram className="hover:text-white cursor-pointer" />
+                        <FaFacebookF className="hover:text-white cursor-pointer" />
+                        <FaTwitter className="hover:text-white cursor-pointer" />
                     </div>
                 </div>
             </section>
