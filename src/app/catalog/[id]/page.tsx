@@ -35,7 +35,7 @@ export default function BikeDetailPage() {
           {bike.image ? (
             <img
               src={bike.image}
-              alt={bike.name}
+              alt={bike.model}
               className="h-full w-full object-cover object-center transition-transform duration-500 hover:scale-105"
             />
           ) : (
