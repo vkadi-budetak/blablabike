@@ -18,13 +18,13 @@ export default function CatalogPage() {
   const [itemsPerPage, setItemsPerPage] = useState(6);
 
   /****************Карточки категорий для Димы */
-  const [categories, setCategories] = React.useState<Category[]>([]);
+  // const [categories, setCategories] = React.useState<Category[]>([]);
 
-  React.useEffect(() => {
-    import("@/api/getCategories").then((m) => {
-      m.getCategories().then(setCategories);
-    });
-  }, []);
+  // React.useEffect(() => {
+  //   import("@/api/getCategories").then((m) => {
+  //     m.getCategories().then(setCategories);
+  //   });
+  // }, []);
   /******************************************* */
 
   useEffect(() => {
@@ -69,8 +69,8 @@ export default function CatalogPage() {
   };
 
   return (
-    <div className="container mx-auto py-10 px-4">
-      <h1 className="text-4xl font-black mb-10">Catalog</h1>
+    <div className="container mx-auto py-10 px-4 pt-20">
+      {/* <h1 className="text-4xl font-black mb-10">Catalog</h1> */}
       <CatalogMenu
         categories={uniqueCategories}
         activeCategory={catFilter}
@@ -79,7 +79,7 @@ export default function CatalogPage() {
         onStatusChange={setStatusFilter}
         onSortChange={setSortBy}
       />
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
         {paginatedBikes.map((bike) => (
           <BikeCard key={bike.id} bike={bike} />
         ))}
@@ -91,11 +91,11 @@ export default function CatalogPage() {
         itemsPerPage={itemsPerPage}
         onItemsPerPageChange={handleItemsPerPageChange}
         totalItems={filteredBikes.length}
-        step={3}
+        step={5} // шаг для выпадающего списка
       />
 
       {/* карточки категорий для Димы */}
-      <div className="mb-12">
+      {/* <div className="mb-12">
         <h2 className="text-2xl font-black uppercase mb-6 px-4">
           Category (Example for Home)
         </h2>
@@ -108,7 +108,7 @@ export default function CatalogPage() {
             </div>
           ))}{" "}
         </div>{" "}
-      </div>
+      </div> */}
       {/* карточки категорий для Димы */}
     </div>
   );
