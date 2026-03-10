@@ -22,7 +22,7 @@ export default function CatalogMenu({
   return (
     <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100 mb-10 shadow-sm">
       <div className="flex flex-col md:flex-row md:items-end gap-6">
-        <div className="flex-[3]">
+        <div className="flex-3">
           <CatalogFilters
             categories={categories}
             activeCategory={activeCategory}
