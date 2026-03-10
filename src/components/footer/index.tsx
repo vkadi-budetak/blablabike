@@ -1,4 +1,6 @@
+
 import { FaInstagram, FaFacebookF, FaTwitter } from "react-icons/fa";
+import Logo from "@/components/nav-bar/logo-svg";
 
 export default function Footer() {
     return (
@@ -6,7 +8,12 @@ export default function Footer() {
             {/* Tailwind styles will work after project styles are connected */}
             <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 <div>
-                    <h2  className="font-semibold mb-3">Bike rental</h2>
+                    <div className="flex items-center gap-2 mb-3">
+                        <Logo />
+                        <span className="text-[#e6ff2a] font-bold text-xl tracking-wide">
+                            Blabla<span className="text-white">Bike</span>
+                        </span>
+                    </div>
                     <p className="text-gray-400">The best bike rental service in your city</p>
                 </div>
 
