@@ -41,13 +41,6 @@ export default function Sidebar({ onClose }: SidebarProps) {
             Profile
           </Link>
           <Link
-            href="/user-profile/bookings"
-            onClick={onClose}
-            className="text-black text-lg font-medium hover:text-[#e6ff2a]"
-          >
-            My Bookings
-          </Link>
-          <Link
             href="/login"
             onClick={onClose}
             className="text-black text-lg font-medium hover:text-[#e6ff2a]"

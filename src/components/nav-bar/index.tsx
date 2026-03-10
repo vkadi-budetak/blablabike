@@ -14,7 +14,6 @@ import Sidebar from "@/components/nav-bar/sidebar-burger-menu/Sidebar";
 
 import { useState } from "react";
 
-
 export default function NavBar() {
   const [showSidebar, setShowSidebar] = useState(false);
 
@@ -50,12 +49,6 @@ export default function NavBar() {
               className="text-white hover:text-[#e6ff2a] transition text-sm font-medium"
             >
               Profile
-            </Link>
-            <Link
-              href={USER_BOOKINGS}
-              className="text-white hover:text-[#e6ff2a] transition text-sm font-medium"
-            >
-              My Bookings
             </Link>
           </div>
 

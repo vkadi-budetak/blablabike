@@ -18,8 +18,6 @@ export default function HeroSection() {
 
     const button = buttonRef.current;
     const text = textRef.current;
-
-    // Curăță stilurile reziduale înainte de orice animare
     gsap.set([button, text], { clearProps: "all" });
     gsap.killTweensOf([button, text]);
 
