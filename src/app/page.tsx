@@ -12,14 +12,13 @@ export default function Home() {
             <CarouselSpacing />
           </div>
         </div>
-        <div className="w-full mx-auto grid md:grid-cols-3 gap-8 text-center mt-10">
-          <div className=" flex flex-col items-center p-8 bg-white rounded-xl shadow-[0_12px_80px_rgba(230,255,41,0.6)]">
+        <div className="w-full mx-auto grid md:grid-cols-1 lg:grid-cols-3 gap-8 text-center mt-10">
+          <div className="flex flex-col items-center p-6 md:p-8 bg-white rounded-xl shadow-[0_12px_80px_rgba(230,255,41,0.6)] md:min-h-[520px] min-h-[420px] md:overflow-auto overflow-visible">
             <div className="h-30 w-30 border"></div>
-            <h3 className="m-5 text-xl font-semibold mb-3">
+            <h3 className="m-5 text-lg md:text-xl font-semibold mb-3 md:mb-4">
               Safe, Smooth & Comfortable
             </h3>
-
-            <p className="text-gray-600">
+            <p className="text-gray-600 text-left w-full px-2 md:px-6 text-sm md:text-base leading-relaxed md:leading-normal">
               Enjoy every ride with bikes designed for maximum safety, smooth
               performance, and complete comfort. Our modern bicycles are
               regularly maintained and equipped with high-quality components to
@@ -34,13 +33,12 @@ export default function Home() {
             </p>
           </div>
 
-          <div className=" flex flex-col items-center p-6 bg-white rounded-xl shadow-[0_12px_80px_rgba(230,255,41,0.6)]">
+          <div className="flex flex-col items-center p-6 md:p-8 bg-white rounded-xl shadow-[0_12px_80px_rgba(230,255,41,0.6)] md:min-h-[520px] min-h-[420px] md:overflow-auto overflow-visible">
             <div className="h-30 w-30 border"></div>
-            <h3 className="m-5 text-xl font-semibold mb-3">
+            <h3 className="m-5 text-lg md:text-xl font-semibold mb-3 md:mb-4">
               Fresh Air & Pure Freedom
             </h3>
-
-            <p className="text-gray-600">
+            <p className="text-gray-600 text-left w-full px-2 md:px-6 text-sm md:text-base leading-relaxed md:leading-normal">
               Leave the car behind and rediscover the joy of moving freely.
               Riding a bike allows you to breathe fresh air, feel the wind on
               your face, and enjoy the simple freedom of being outdoors. Every
@@ -53,11 +51,12 @@ export default function Home() {
             </p>
           </div>
 
-          <div className=" flex flex-col items-center h-150  p-6 bg-white rounded-xl shadow-[0_12px_80px_rgba(230,255,41,0.6)]">
+          <div className="flex flex-col items-center p-6 md:p-8 bg-white rounded-xl shadow-[0_12px_80px_rgba(230,255,41,0.6)] md:min-h-[520px] min-h-[420px] md:overflow-auto overflow-visible">
             <div className="h-30 w-30 border"></div>
-            <h3 className="m-5 text-xl font-semibold mb-3">Fun Guaranteed</h3>
-
-            <p className="text-gray-600">
+            <h3 className="m-5 text-lg md:text-xl font-semibold mb-3 md:mb-4">
+              Fun Guaranteed
+            </h3>
+            <p className="text-gray-600 text-left w-full px-2 md:px-6 text-sm md:text-base leading-relaxed md:leading-normal">
               Whether you're riding with family, exploring the city with
               friends, or enjoying a peaceful solo adventure, every bike ride
               promises a memorable experience. Cycling is more than just
