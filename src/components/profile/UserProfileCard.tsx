@@ -5,7 +5,7 @@ type Props = {
 };
 
 export default function UserProfileCard({ user }: Props) {
-  const initials = user.name
+  const initials = user.full_name
     .split(" ")
     .map((part) => part[0])
     .join("")
@@ -20,7 +20,7 @@ export default function UserProfileCard({ user }: Props) {
           </div>
 
           <div>
-            <h2 className="text-xl font-semibold">{user.name}</h2>
+            <h2 className="text-xl font-semibold">{user.full_name}</h2>
             <p className="text-gray-500">Member</p>
           </div>
         </div>

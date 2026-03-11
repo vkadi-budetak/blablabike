@@ -8,7 +8,7 @@ type Props = {
 };
 
 export default function EditProfileForm({ user }: Props) {
-  const [name, setName] = useState(user.name);
+  const [full_name, setName] = useState(user.full_name);
   const [telephone, setTelephone] = useState(user.telephone);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -16,7 +16,7 @@ export default function EditProfileForm({ user }: Props) {
 
     const updatedUser: User = {
       ...user,
-      name,
+      full_name,
       telephone,
     };
 
@@ -34,7 +34,7 @@ export default function EditProfileForm({ user }: Props) {
 
           <input
             type="text"
-            value={name}
+            value={full_name}
             onChange={(e) => setName(e.target.value)}
             className="mt-1 w-full rounded-xl border px-4 py-2"
           />
