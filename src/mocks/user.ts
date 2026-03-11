@@ -4,7 +4,7 @@ export const mockUser: User = {
   id: 1,
   email: "dmitrii@example.com",
   password: "",
-  name: "Dmitrii Evdokimov",
+  full_name: "Dmitrii Evdokimov",
   role: "CUSTOMER",
   avatar: "",
   telephone: "+49 123 456 789",
