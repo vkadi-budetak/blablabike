@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-//import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 import { db } from "@/db/db";
 import { users } from "@/db/tables/users";
@@ -10,7 +10,7 @@ import { mapUserToCurrentUser } from "./mapUserToCurrentUser";
 
 export async function getCurrentUser(): Promise<CurrentUser | null> {
 
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
 
   if (!session?.user?.email) {
     return null;
