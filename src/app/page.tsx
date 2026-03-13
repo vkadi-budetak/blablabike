@@ -43,7 +43,7 @@ export default function Home() {
               Riding a bike allows you to breathe fresh air, feel the wind on
               your face, and enjoy the simple freedom of being outdoors. Every
               ride becomes a moment to relax, clear your mind, and connect with
-              the world around you. Whether you're exploring scenic paths,
+              the world around you. Whether you&apos;re exploring scenic paths,
               cruising through the city, or discovering new places, cycling
               gives you the freedom to move at your own pace. Feel the wind, own
               the moment, and enjoy every second of the journey while creating
@@ -57,16 +57,17 @@ export default function Home() {
               Fun Guaranteed
             </h3>
             <p className="text-gray-600 text-left w-full px-2 md:px-6 text-sm md:text-base leading-relaxed md:leading-normal">
-              Whether you're riding with family, exploring the city with
+              Whether you&apos;re riding with family, exploring the city with
               friends, or enjoying a peaceful solo adventure, every bike ride
               promises a memorable experience. Cycling is more than just
-              transportation — it's a fun and exciting way to discover new
+              transportation — it&apos;s a fun and exciting way to discover new
               places, share special moments, and enjoy the outdoors. Our bikes
               are perfect for riders of all ages and experience levels, making
               every trip easy, enjoyable, and full of positive energy. From
               relaxed rides through scenic routes to spontaneous adventures
               around the city, one ride is all it takes to fall in love with the
-              experience — and you'll definitely want to come back for more.
+              experience — and you&apos;ll definitely want to come back for
+              more.
             </p>
           </div>
         </div>
