@@ -32,7 +32,7 @@ export default function UserProfileCard({ user }: Props) {
     <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-6">
-          <div className="relative flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-gray-200 to-gray-300 text-2xl font-semibold text-gray-700">
+          <div className="relative flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-gray-200 to-gray-300 text-2xl font-semibold text-gray-700">
             {showAvatar ? (
               <Image
                 src={avatarSrc!}
