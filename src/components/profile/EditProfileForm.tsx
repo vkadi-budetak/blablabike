@@ -1,9 +1,10 @@
 "use client";
 
-import { updateProfile, type UpdateProfileState } from "@/app/actions/updateProfile";
+import { updateProfile } from "@/app/actions/updateProfile";
 import { CurrentUser } from "@/types/CurrentUser";
 import { useActionState, useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
+import { UpdateProfileState } from "./model/profile.types";
 
 type Props = {
   user: CurrentUser;
@@ -75,7 +76,7 @@ export default function EditProfileForm({ user }: Props) {
             defaultValue={state.values.full_name}
             className="mt-1 w-full rounded-xl border px-4 py-2"
           />
-          <div className="mt-1 min-h-[20px]">
+          <div className="mt-1 min-h-5">
             {fullNameError && (
               <p className="text-sm text-red-600">{fullNameError}</p>
             )}
@@ -94,7 +95,7 @@ export default function EditProfileForm({ user }: Props) {
 
       <div className="mt-6 flex items-center gap-3">
         <SubmitButton />
-        <div className="min-h-[20px]">
+        <div className="min-h-5">
           {showSuccess && state?.successMessage && (
             <p className="text-sm text-green-600">{state.successMessage}</p>
           )}
