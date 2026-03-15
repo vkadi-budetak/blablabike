@@ -101,7 +101,7 @@ export default function RegisterForm() {
         </div>
       )}
 
-      <form className="space-y-4" onSubmit={handleSubmit}>
+      <form className="space-y-4" onSubmit={handleSubmit} noValidate>
         <div className="space-y-2">
           <label
             htmlFor="name"
