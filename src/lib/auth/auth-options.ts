@@ -1,11 +1,11 @@
 import { users } from "@/db/tables/users";
 import { db } from "@/db/db";
-import { Session, User, NextAuthOptions } from "next-auth";
+import { Session, NextAuthOptions } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import GoogleProvider from "next-auth/providers/google";
 
 import CredentialsProvider from "next-auth/providers/credentials";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 export const authOptions: NextAuthOptions = {
   providers: [

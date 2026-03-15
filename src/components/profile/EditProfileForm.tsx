@@ -51,7 +51,7 @@ export default function EditProfileForm({ user }: Props) {
 
     const timer = setTimeout(() => {
       setShowSuccess(false);
-    }, 3000);-
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, [state?.timestamp, state?.success, state?.successMessage]);
