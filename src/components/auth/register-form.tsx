@@ -47,7 +47,6 @@ export default function RegisterForm() {
       setError(result.error);
       setIsLoading(false);
     } else {
-      // 3. АВТОМАТИЧНИЙ ВХІД (Крок 3 нашого плану)
       const signInResult = await signIn("credentials", {
         email: formData.email,
         password: formData.password,
