@@ -63,9 +63,14 @@ export default function BikeDetailPage() {
             </div>
           </div>
 
-          <button className="w-full md:w-auto bg-black text-white px-12 py-5 rounded-2xl font-black hover:scale-105 transition-transform uppercase tracking-widest shadow-xl">
-            Book
-          </button>
+          <Link
+            href={`/catalog/${bike.id}/booking`}
+            className="w-full md:w-auto"
+          >
+            <button className="w-full bg-black text-white px-12 py-5 rounded-2xl font-black hover:scale-105 transition-transform uppercase tracking-widest shadow-xl">
+              Book Now
+            </button>
+          </Link>
         </div>
       </div>
     </div>
