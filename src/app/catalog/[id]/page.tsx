@@ -1,23 +1,24 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import { getBikes } from "@/api/getBikes";
-import { Bike } from "@/types/Bike";
+import React from "react";
 import Link from "next/link";
+import { notFound } from "next/navigation";
+import { bikesService } from "@/services/bikes.service";
 
-export default function BikeDetailPage() {
-  const { id } = useParams();
-  const [bike, setBike] = useState<Bike | null>(null);
 
-  useEffect(() => {
-    getBikes().then((data) => {
-      const found = data.find((b) => b.id.toString() === id);
-      setBike(found || null);
-    });
-  }, [id]);
+export default async function BikeDetailPage({ params }: { params: { id: string } }) {
+  
+  const { id } = await params;
 
-  if (!bike)
-    return <div className="p-20 text-center font-bold">Loading...</div>;
+ 
+  const bike = await bikesService.getBikeById(id);
+
+ 
+  if (!bike) {
+    notFound();
+  }
+
+  
+  const displayPrice = Number(bike.pricePerDay);
+  const displayStatus = bike.isActive ? "Available" : "Busy";
 
   return (
     <div className="container mx-auto py-20 px-4">
@@ -30,12 +31,14 @@ export default function BikeDetailPage() {
         </span>
         RETURN TO CATALOG
       </Link>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+        {/* Блок с изображением */}
         <div className="relative h-96 w-full overflow-hidden rounded-3xl bg-gray-100 shadow-lg">
           {bike.image ? (
             <img
               src={bike.image}
-              alt={bike.model}
+              alt={`${bike.brand} ${bike.model}`}
               className="h-full w-full object-cover object-center transition-transform duration-500 hover:scale-105"
             />
           ) : (
@@ -45,26 +48,29 @@ export default function BikeDetailPage() {
           )}
         </div>
 
+        {/* Информационный блок */}
         <div>
-          <h1 className="text-5xl font-black mb-4 uppercase">{bike.model}</h1>
-          <div className="inline-block bg-blue-600 text-white px-4 py-1 rounded-full text-xs font-black mb-6 uppercase tracking-widest">
-            {bike.category.name}
+          <h1 className="text-5xl font-black mb-4 uppercase">
+            {bike.brand} <span className="text-gray-400">{bike.model}</span>
+          </h1>
+
+          {/* Статус из базы */}
+          <div className="inline-block bg-[#e6ff2a] text-black px-4 py-1 rounded-full text-xs font-black mb-6 uppercase tracking-widest">
+             {displayStatus}
           </div>
+
           <p className="text-3xl font-black text-gray-900 mb-8">
-            {bike.price} ₽ / час
+            {displayPrice} ₽ / day
           </p>
 
           <div className="space-y-4 mb-10">
-            <p className="text-gray-500 leading-relaxed">{bike.description}</p>
-            <div className="flex gap-4">
-              <span className="bg-gray-100 p-2 rounded text-sm">
-                🛠 Available: {bike.status}
-              </span>
-            </div>
+            <p className="text-gray-500 leading-relaxed">
+              {bike.description || "No description provided for this model."}
+            </p>
           </div>
 
           <button className="w-full md:w-auto bg-black text-white px-12 py-5 rounded-2xl font-black hover:scale-105 transition-transform uppercase tracking-widest shadow-xl">
-            Book
+            Book Now
           </button>
         </div>
       </div>
