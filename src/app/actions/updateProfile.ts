@@ -2,99 +2,65 @@
 
 import { db } from "@/db/db";
 import { users } from "@/db/tables/users";
-import { eq } from "drizzle-orm";
 import { getCurrentUser } from "@/lib/auth/getCurrentUser";
 import { revalidatePath } from "next/cache";
-import z from "zod";
+import { eq } from "drizzle-orm";
 
-const UpdateProfileSchema = z.object({
-  avatar: z.string().optional(),
-  full_name: z
-    .string()
-    .min(2, "Name must have minimum 2 symbols")
-    .max(120, "Name is too long"),
-  telephone: z.string().optional(),
-});
-
-type UpdateProfileFieldErrors = z.inferFlattenedErrors<
-  typeof UpdateProfileSchema
->["fieldErrors"];
-
-export type UpdateProfileState = {
-  success: boolean;
-  successMessage: string;
-  timestamp: number;
-  fieldErrors: UpdateProfileFieldErrors;
-  values: {
-    avatar: string;
-    full_name: string;
-    telephone: string;
-  };
-};
+import { updateProfileSchema } from "@/components/profile/model/updateProfile.schema";
+import type { UpdateProfileState } from "@/components/profile/model/profile.types";
 
 export async function updateProfile(
   _prevState: UpdateProfileState,
   formData: FormData
 ): Promise<UpdateProfileState> {
+  
   const currentUser = await getCurrentUser();
 
   if (!currentUser) {
     throw new Error("Unauthorized");
   }
 
-  const avatar = String(formData.get("avatar") ?? "");
-  const full_name = String(formData.get("full_name") ?? "");
-  const telephone = String(formData.get("telephone") ?? "");
+  const values = {
+    avatar: String(formData.get("avatar") ?? ""),
+    full_name: String(formData.get("full_name") ?? ""),
+    telephone: String(formData.get("telephone") ?? ""),
+  };
 
-  try {
-    const parsed = UpdateProfileSchema.parse({
-      avatar,
-      full_name,
-      telephone,
-    });
+  const result = updateProfileSchema.safeParse(values);
 
-    await db
-      .update(users)
-      .set({
-        avatar: parsed.avatar,
-        fullName: parsed.full_name,
-        phone: parsed.telephone,
-      })
-      .where(eq(users.id, currentUser.id));
-
-    revalidatePath("/user-profile");
-    revalidatePath("/user-profile/edit");
-
+  if (!result.success) {
     return {
-      success: true,
-      successMessage: "Profile updated",
+      success: false,
+      successMessage: "",
       timestamp: Date.now(),
-      fieldErrors: {},
-      values: {
-        avatar: parsed.avatar ?? "",
-        full_name: parsed.full_name,
-        telephone: parsed.telephone ?? "",
-      },
+      fieldErrors: result.error.flatten().fieldErrors,
+      values,
     };
-  } catch (err) {
-    console.error("UPDATE ERROR:", err);
-
-    if (err instanceof z.ZodError) {
-      const flattened = z.flattenError(err);
-
-      return {
-        success: false,
-        successMessage: "",
-        timestamp: Date.now(),
-        fieldErrors: flattened.fieldErrors,
-        values: {
-          avatar,
-          full_name,
-          telephone,
-        },
-      };
-    }
-
-    throw err;
   }
+
+  const parsed = result.data;
+
+  await db
+    .update(users)
+    .set({
+      avatar: parsed.avatar,
+      fullName: parsed.full_name,
+      phone: parsed.telephone,
+    })
+    .where(eq(users.id, currentUser.id));
+
+  revalidatePath("/user-profile");
+  revalidatePath("/user-profile/edit");
+
+  return {
+    success: true,
+    successMessage: "Profile updated",
+    timestamp: Date.now(),
+    fieldErrors: {},
+    values: {
+      avatar: parsed.avatar ?? "",
+      full_name: parsed.full_name,
+      telephone: parsed.telephone ?? "",
+    },
+  };
 }
