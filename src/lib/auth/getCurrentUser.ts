@@ -7,6 +7,7 @@ import { eq } from "drizzle-orm";
 import type { CurrentUser } from "@/types/CurrentUser";
 import { mapUserToCurrentUser } from "./mapUserToCurrentUser";
 import { authOptions } from "./auth-options";
+import { getUserByEmail } from "@/app/api/user/get-current-user";
 
 export async function getCurrentUser(): Promise<CurrentUser | null> {
   const session = await getServerSession(authOptions);
@@ -15,9 +16,8 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
     return null;
   }
 
-  const user = await db.query.users.findFirst({
-    where: eq(users.email, session.user.email),
-  });
+  const user = await getUserByEmail(session.user.email);
+ 
 
   if (!user) {
     return null;
