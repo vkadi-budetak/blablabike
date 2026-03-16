@@ -5,7 +5,6 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { Bike } from "@/types/Bike";
 import BikeCard from "@/components/catalog/bike-card";
 import CatalogPagination from "@/components/catalog/catalog-pagination";
-import CatalogMenu from "@/components/catalog/catalog-menu";
 
 export default function CatalogPage() {
   const [allBikes, setAllBikes] = useState<Bike[]>([]);
@@ -22,7 +21,23 @@ export default function CatalogPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(6);
 
-  // 2. Загрузка данных
+  useEffect(() => {
+    const savedUrl = sessionStorage.getItem("lastCatalogUrl");
+    const currentQuery = window.location.search;
+
+    // Если мы зашли на пустой /catalog, но у нас есть сохраненный путь с фильтрами
+    if (!currentQuery && savedUrl && savedUrl.includes('?')) {
+      router.replace(savedUrl);
+    }
+  }, []);
+
+  // 2. Сохраняем текущее состояние фильтров для кнопки "Назад"
+  useEffect(() => {
+    const currentFullUrl = window.location.pathname + window.location.search;
+    sessionStorage.setItem("lastCatalogUrl", currentFullUrl);
+  }, [searchParams]);
+
+  // 3. Загрузка данных
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -38,42 +53,24 @@ export default function CatalogPage() {
     loadData();
   }, []);
 
-  // 3. Вычисляем список категорий ДЛЯ МЕНЮ прямо из полученных байков
-  const categoriesList = useMemo(() => {
-    const names = allBikes
-      .map((bike) => bike.category?.name)
-      .filter((name): name is string => Boolean(name));
-    
-    // Оставляем только уникальные названия
-    return Array.from(new Set(names));
-  }, [allBikes]);
-
-  // 4. Функции обновления URL (чтобы фильтры работали)
-  const updateURL = (key: string, value: string) => {
-    const params = new URLSearchParams(searchParams.toString());
-    if (value === "all" || value === "default") {
-      params.delete(key);
-    } else {
-      params.set(key, value);
-    }
-    router.push(`?${params.toString()}`);
-  };
-
-  // 5. Логика фильтрации списка
+  // 4. Логика фильтрации и сортировки
   const filteredBikes = useMemo(() => {
     let result = [...allBikes];
     
+    // Фильтр по категориям
     if (catFilter !== "all") {
       result = result.filter((b) => 
-        b.category?.name?.toLowerCase().includes(catFilter.toLowerCase())
+        b.category?.name?.toLowerCase() === catFilter.toLowerCase()
       );
     }
     
+    // Фильтр по статусу
     if (statusFilter !== "all") {
       const isAvail = statusFilter === "Available";
       result = result.filter((b) => b.isActive === isAvail);
     }
 
+    // Сортировка
     if (sortBy === "low") {
       result.sort((a, b) => Number(a.pricePerDay) - Number(b.pricePerDay));
     } else if (sortBy === "high") {
@@ -83,40 +80,62 @@ export default function CatalogPage() {
     return result;
   }, [allBikes, catFilter, statusFilter, sortBy]);
 
-  // 6. Пагинация
+  // 5. Пагинация
   const totalPages = Math.ceil(filteredBikes.length / itemsPerPage);
   const safePage = currentPage > totalPages && totalPages > 0 ? 1 : currentPage;
   const startIndex = (safePage - 1) * itemsPerPage;
   const paginatedBikes = filteredBikes.slice(startIndex, startIndex + itemsPerPage);
 
-  if (loading) return <div className="p-20 text-center font-bold">LOADING...</div>;
+  // Сбрасываем страницу на 1-ю при изменении фильтров
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [catFilter, statusFilter, sortBy]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        <span className="ml-3 font-medium text-gray-500">Loading bikes...</span>
+      </div>
+    );
+  }
 
   return (
-    <div className="container mx-auto py-10 px-4">
-      
-   
-
+    <div className="container mx-auto pb-20 px-4">
       {filteredBikes.length > 0 ? (
         <>
+          {/* Сетка карточек */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {paginatedBikes.map((bike) => (
               <BikeCard key={bike.id} bike={bike} />
             ))}
           </div>
 
-          <CatalogPagination
-            currentPage={safePage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-            itemsPerPage={itemsPerPage}
-            onItemsPerPageChange={(n) => { setItemsPerPage(n); setCurrentPage(1); }}
-            totalItems={filteredBikes.length}
-            step={3}
-          />
+          {/* Пагинация */}
+          <div className="mt-12">
+            <CatalogPagination
+              currentPage={safePage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+              itemsPerPage={itemsPerPage}
+              onItemsPerPageChange={(n) => { 
+                setItemsPerPage(n); 
+                setCurrentPage(1); 
+              }}
+              totalItems={filteredBikes.length}
+              step={3}
+            />
+          </div>
         </>
       ) : (
-        <div className="text-center py-20 border-2 border-dashed rounded-3xl text-gray-400">
-          No bikes found for &quot;{catFilter}&quot;
+        <div className="text-center py-20 border-2 border-dashed border-gray-200 rounded-3xl text-gray-400">
+          <p className="text-xl">No bikes found for category &quot;{catFilter}&quot;</p>
+          <button 
+            onClick={() => router.push('/catalog')}
+            className="mt-4 text-blue-500 hover:text-blue-600 font-medium"
+          >
+            Clear all filters
+          </button>
         </div>
       )}
     </div>
