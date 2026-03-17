@@ -10,7 +10,7 @@ export async function getUserBookings() {
   const user = await getCurrentUser();
 
   if (!user) {
-    throw new Error("Unauthorized");
+    return [];
   }
 
   const rows = await db
