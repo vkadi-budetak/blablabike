@@ -18,13 +18,19 @@ export default function AdminPanel() {
   const [accessories, setAccessories] = useState([]);
   const [showAddBike, setShowAddBike] = useState(false);
 
+  const loadBikes = async () => {
+    const res = await fetch("/api/bikes");
+    const data = await res.json();
+    setBikes(data);
+  };
+
   useEffect(() => {
-    fetch("/api/bikes")
-      .then((res) => res.json())
-      .then((bikes) => setBikes(bikes));
+    loadBikes();
+
     fetch("/api/getCategories")
       .then((res) => res.json())
       .then((cats) => setCategories(cats));
+
     fetch("/api/actions-accessory/read-all-accessories")
       .then((res) => res.json())
       .then((accs) => setAccessories(accs));
@@ -39,11 +45,9 @@ export default function AdminPanel() {
   };
 
   const handleAddBike = () => setShowAddBike(true);
-  const handleAddBikeSuccess = () => {
+  const handleAddBikeSuccess = async () => {
     setShowAddBike(false);
-    fetch("/api/bikes")
-      .then((res) => res.json())
-      .then((bikes) => setBikes(bikes));
+    await loadBikes();
   };
 
   return (
@@ -65,7 +69,9 @@ export default function AdminPanel() {
         onAddAccessory={handleAddAccessory}
         onAddCategory={() => {}}
       />
-      {activeTab === "bikes" && <BikesTable bikes={bikes} />}
+      {activeTab === "bikes" && (
+        <BikesTable bikes={bikes} onDeleteSuccess={loadBikes} />
+      )}
       <AddBikeModal
         open={showAddBike}
         onClose={() => setShowAddBike(false)}

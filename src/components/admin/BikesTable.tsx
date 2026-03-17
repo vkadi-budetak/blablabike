@@ -1,11 +1,16 @@
 import EmptyState from "@/components/admin/EmptyState";
 import type { Bike } from "@/types/admin";
+import deleteBike from "@/app/api/actions-bike/delete-bike";
 
 type BikesTableProps = {
   bikes: Bike[];
+  onDeleteSuccess: () => Promise<void>;
 };
 
-export default function BikesTable({ bikes }: BikesTableProps) {
+export default function BikesTable({
+  bikes,
+  onDeleteSuccess,
+}: BikesTableProps) {
   const handleEditBike = (id: string) => {
     // TODO: Implement edit modal or redirect
     alert(`Edit bike: ${id}`);
@@ -16,10 +21,16 @@ export default function BikesTable({ bikes }: BikesTableProps) {
   };
 
   const handleDeleteBike = async (id: string) => {
-    if (!confirm("Sigur vrei să ștergi bicicleta?")) return;
-    await fetch(`/api/actions-bike/delete-bike?id=${id}`, { method: "POST" });
-    // Re-fetch bikes
-    window.location.reload(); // Simplu pentru demo, ideal ar fi să refetch-uiască lista
+    const confirmed = confirm("Are you sure you want to delete this bike?");
+    if (!confirmed) return;
+
+    try {
+      await deleteBike(id);
+      await onDeleteSuccess();
+    } catch (error) {
+      console.error("Delete failed:", error);
+      alert("Failed to delete bike");
+    }
   };
 
   if (bikes.length === 0) {
@@ -36,7 +47,6 @@ export default function BikesTable({ bikes }: BikesTableProps) {
       <table className="w-full text-left">
         <thead className="bg-gray-50 text-sm text-gray-600">
           <tr>
-            <th className="px-6 py-4">ID</th>
             <th className="px-6 py-4">Name</th>
             <th className="px-6 py-4">Type</th>
             <th className="px-6 py-4">Price/Hour</th>
@@ -48,7 +58,6 @@ export default function BikesTable({ bikes }: BikesTableProps) {
         <tbody className="divide-y divide-gray-200">
           {bikes.map((bike) => (
             <tr key={bike.id} className="text-sm text-gray-700">
-              <td className="px-6 py-4">{bike.id}</td>
               <td className="px-6 py-4">
                 <div className="flex items-center gap-3">
                   <img
@@ -72,13 +81,6 @@ export default function BikesTable({ bikes }: BikesTableProps) {
                 <div className="flex items-center gap-3 text-base">
                   <button type="button" onClick={() => handleEditBike(bike.id)}>
                     ✏️
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => handleRepairBike(bike.id)}
-                  >
-                    🔧
                   </button>
 
                   <button
