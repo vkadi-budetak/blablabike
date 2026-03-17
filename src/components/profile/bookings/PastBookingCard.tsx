@@ -10,27 +10,27 @@ function formatPrice(value: number) {
 
 export default function PastBookingCard({ booking }: Props) {
   return (
-    <article className="flex items-center justify-between gap-4 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm">
+    <div className="flex items-center justify-between gap-4 py-3 text-sm border-b border-gray-100 last:border-none">
       
-      {/* Левая часть */}
+      {/* Title */}
       <div className="min-w-0 flex-1">
         <p className="truncate font-medium">{booking.title}</p>
       </div>
 
-      {/* Даты */}
-      <div className="hidden whitespace-nowrap text-gray-600 md:block">
+      {/* Dates */}
+      <div className="hidden whitespace-nowrap text-gray-500 md:block">
         {booking.startDate} — {booking.endDate}
       </div>
 
-      {/* Цена */}
+      {/* Price */}
       <div className="whitespace-nowrap font-medium">
         {formatPrice(booking.totalPrice)}
       </div>
 
-      {/* Статус */}
-      <div className="whitespace-nowrap rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-600">
+      {/* Status */}
+      <div className="whitespace-nowrap text-xs text-gray-500">
         Completed
       </div>
-    </article>
+    </div>
   );
 }
