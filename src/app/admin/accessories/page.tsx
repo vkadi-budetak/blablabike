@@ -15,7 +15,6 @@ export default function AdminAccessoriesPage() {
       .then((res) => res.json())
       .then((accs) => setAccessories(accs));
   };
-
   const handleEditAccessory = (acc: any) => {
     setEditForm({
       name: acc.name || "",
