@@ -1,12 +1,11 @@
 import { db } from "@/db/db";
 import { bikes } from "@/db/tables/bikes";
-import { categories } from "@/db/tables/categories"; 
+import { categories } from "@/db/tables/categories";
 import { eq } from "drizzle-orm";
 
 export const bikesService = {
   async getAllBikes() {
     try {
-      
       const result = await db
         .select({
           bike: bikes,
@@ -15,16 +14,13 @@ export const bikesService = {
         .from(bikes)
         .leftJoin(categories, eq(bikes.bikeCategoryId, categories.id));
 
-     
       return result.map(({ bike, category }) => ({
-        ...bike,
-        title: `${bike.brand} ${bike.model}`,
+        id: bike.id,
+        name: `${bike.brand ?? ""} ${bike.model ?? ""}`.trim(),
+        type: category?.name || "No Category",
         price: Number(bike.pricePerDay),
         status: bike.isActive ? "available" : "busy",
-       
-        category: { 
-          name: category?.name || "No Category" 
-        }
+        image: bike.image ?? null,
       }));
     } catch (error) {
       console.error("Error loading bikes:", error);
@@ -44,5 +40,5 @@ export const bikesService = {
   async getBikeById(id: string) {
     const result = await db.select().from(bikes).where(eq(bikes.id, id));
     return result[0] || null;
-  }
+  },
 };

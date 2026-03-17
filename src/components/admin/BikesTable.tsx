@@ -49,7 +49,16 @@ export default function BikesTable({ bikes }: BikesTableProps) {
           {bikes.map((bike) => (
             <tr key={bike.id} className="text-sm text-gray-700">
               <td className="px-6 py-4">{bike.id}</td>
-              <td className="px-6 py-4">{bike.name}</td>
+              <td className="px-6 py-4">
+                <div className="flex items-center gap-3">
+                  <img
+                    src={bike.image || "/images/bike-placeholder.png"}
+                    alt={bike.name}
+                    className="h-10 w-10 rounded-md object-cover border border-gray-200"
+                  />
+                  <span>{bike.name}</span>
+                </div>
+              </td>
               <td className="px-6 py-4">{bike.type}</td>
               <td className="px-6 py-4">€{bike.price}</td>
 
