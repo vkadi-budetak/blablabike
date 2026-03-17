@@ -49,7 +49,7 @@ export default function BikesTable({
           <tr>
             <th className="px-6 py-4">Name</th>
             <th className="px-6 py-4">Type</th>
-            <th className="px-6 py-4">Price/Hour</th>
+            <th className="px-6 py-4">Price/Day</th>
             <th className="px-6 py-4">Status</th>
             <th className="px-6 py-4">Actions</th>
           </tr>
