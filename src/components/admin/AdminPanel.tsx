@@ -16,7 +16,9 @@ export default function AdminPanel() {
   const [showAddBike, setShowAddBike] = useState(false);
 
   useEffect(() => {
-    setBikes([]); // Populate with bikes from DB
+    fetch("/api/bikes")
+      .then((res) => res.json())
+      .then((bikes) => setBikes(bikes));
     fetch("/api/getCategories")
       .then((res) => res.json())
       .then((cats) => setCategories(cats));
@@ -25,7 +27,9 @@ export default function AdminPanel() {
   const handleAddBike = () => setShowAddBike(true);
   const handleAddBikeSuccess = () => {
     setShowAddBike(false);
-    // TODO: Re-fetch bikes from DB/API
+    fetch("/api/bikes")
+      .then((res) => res.json())
+      .then((bikes) => setBikes(bikes));
   };
 
   return (

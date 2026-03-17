@@ -7,15 +7,19 @@ type BikesTableProps = {
 
 export default function BikesTable({ bikes }: BikesTableProps) {
   const handleEditBike = (id: string) => {
-    console.log("Edit bike:", id);
+    // TODO: Implement edit modal or redirect
+    alert(`Edit bike: ${id}`);
   };
 
   const handleRepairBike = (id: string) => {
-    console.log("Repair bike:", id);
+    alert(`Repair bike: ${id}`);
   };
 
-  const handleDeleteBike = (id: string) => {
-    console.log("Delete bike:", id);
+  const handleDeleteBike = async (id: string) => {
+    if (!confirm("Sigur vrei să ștergi bicicleta?")) return;
+    await fetch(`/api/actions-bike/delete-bike?id=${id}`, { method: "POST" });
+    // Re-fetch bikes
+    window.location.reload(); // Simplu pentru demo, ideal ar fi să refetch-uiască lista
   };
 
   if (bikes.length === 0) {
@@ -57,10 +61,7 @@ export default function BikesTable({ bikes }: BikesTableProps) {
 
               <td className="px-6 py-4">
                 <div className="flex items-center gap-3 text-base">
-                  <button
-                    type="button"
-                    onClick={() => handleEditBike(bike.id)}
-                  >
+                  <button type="button" onClick={() => handleEditBike(bike.id)}>
                     ✏️
                   </button>
 
