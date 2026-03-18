@@ -1,11 +1,19 @@
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth/auth-options";
+import { getUserByEmail } from "@/app/api/user/get-current-user";
 import UserProfileCard from "@/components/profile/UserProfileCard";
-import { getCurrentUser } from "@/lib/auth/getCurrentUser";
 
 export default async function UserProfilePage() {
-  const user = await getCurrentUser();
+  const session = await getServerSession(authOptions);
 
+  if (!session?.user?.email) {
+    redirect("/login");
+  }
+
+  const user = await getUserByEmail(session.user.email);
   if (!user) {
-    return <div>User not found</div>;
+    redirect("/login");
   }
 
   return <UserProfileCard user={user} />;
