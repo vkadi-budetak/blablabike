@@ -9,6 +9,7 @@ export default function OrderSummary({
   endDate,
   options,
   dbAccessories,
+  onConfirm,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 }: any) {
   const pricePerDay = Number(bike.pricePerDay) || 0;
@@ -84,7 +85,6 @@ export default function OrderSummary({
         </div>
       </div>
 
-      {/* Список цін */}
       <div className="space-y-3 mb-6 text-sm">
         <div className="flex justify-between text-zinc-600">
           <span>Base Rental</span>
@@ -133,7 +133,10 @@ export default function OrderSummary({
         </span>
       </div>
 
-      <Button className="w-full bg-[#e6ff2a] hover:bg-black hover:text-[#e6ff2a] text-black font-bold py-6 rounded-xl transition-all duration-300 uppercase tracking-widest text-xs shadow-lg shadow-[#e6ff2a]/20">
+      <Button
+        onClick={onConfirm}
+        className="w-full bg-[#e6ff2a] hover:bg-black hover:text-[#e6ff2a] text-black font-bold py-6 rounded-xl transition-all duration-300 uppercase tracking-widest text-xs shadow-lg shadow-[#e6ff2a]/20"
+      >
         Confirm & Pay
       </Button>
 

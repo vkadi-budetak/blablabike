@@ -4,6 +4,7 @@ import { RentalPeriod } from "./components/RentalPeriod";
 import { ContactInfo } from "./components/ContactInfo";
 import { AdditionalOptions } from "./components/AdditionalOptions";
 
+// src/components/booking/BookingForm/index.tsx
 export default function BookingForm({
   startDate,
   setStartDate,
@@ -12,6 +13,9 @@ export default function BookingForm({
   options,
   setOptions,
   dbAccessories,
+  contactData,
+  setContactData,
+  errors,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 }: any) {
   return (
@@ -20,14 +24,19 @@ export default function BookingForm({
         startDate={startDate}
         setStartDate={setStartDate}
         endDate={endDate}
-        etEndDate={setEndDate}
+        setEndDate={setEndDate}
       />
-      <ContactInfo />
+
+      <ContactInfo
+        contactData={contactData}
+        setContactData={setContactData}
+        errors={errors}
+      />
 
       <AdditionalOptions
         options={options}
         setOptions={setOptions}
-        dbAccessories={dbAccessories} // 2. ПЕРЕДАЄМО СЮДИ
+        dbAccessories={dbAccessories}
       />
     </div>
   );
