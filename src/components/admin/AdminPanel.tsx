@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import AdminHeader from "./AdminHeader";
 import AdminTabs from "./AdminTabs";
 import AdminStats from "./AdminStats";
-import AdminSidebar from "./AdminSidebar";
+import AdminActions from "./AdminActions";
 import BikesTable from "./BikesTable";
 import AddBikeModal from "./AddBikeModal";
 import { Bike } from "@/types/admin";
@@ -70,11 +70,7 @@ export default function AdminPanel() {
   };
 
   return (
-    <div className="grid grid-cols-1 gap-8 md:grid-cols-[210px_1fr]">
-      <aside className="self-start">
-        <AdminSidebar />
-      </aside>
-
+    <>
       <section className="space-y-6">
         <AdminHeader
           onAddBike={handleAddBike}
@@ -92,6 +88,12 @@ export default function AdminPanel() {
           totalBikes={bikes.length}
           activeOrders={0}
           totalAccessories={accessories.length}
+        />
+
+        <AdminActions
+          onAddBike={handleAddBike}
+          onAddAccessory={handleAddAccessory}
+          onAddCategory={handleAddCategory}
         />
 
         {activeTab === "bikes" && (
@@ -115,6 +117,6 @@ export default function AdminPanel() {
         onClose={() => setShowAddAccessory(false)}
         onSuccess={handleAddAccessorySuccess}
       />
-    </div>
+    </>
   );
 }

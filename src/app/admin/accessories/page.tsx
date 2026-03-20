@@ -52,15 +52,6 @@ export default function AdminAccessoriesPage() {
   return (
     <div className="m-10 container mx-auto py-10">
       <div className="flex items-center mb-6">
-        <button
-          className="mr-4 flex items-center text-sm font-bold text-gray-400 hover:text-black transition-colors group uppercase"
-          onClick={() => (window.location.href = "/admin")}
-        >
-          <span className="mr-2 transition-transform group-hover:-translate-x-1">
-            ←
-          </span>
-          Back to Admin Panel
-        </button>
         <h1 className="text-3xl font-bold">Accessories</h1>
       </div>
       <div className="mb-6 flex gap-6">
