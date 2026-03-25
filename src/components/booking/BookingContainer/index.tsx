@@ -64,23 +64,53 @@ export default function BookingContainer({ bike }: BookingContainerProps) {
         .replace(/(.{4})/g, "$1 ")
         .trim();
     } else if (name === "expiryDate") {
-      formattedValue = value
-        .replace(/\D/g, "")
-        .replace(/(\d{2})(\d{0,2})/, "$1/$2")
-        .trim();
+      let cleanValue = value.replace(/\D/g, "");
+      if (cleanValue.length >= 1 && parseInt(cleanValue[0]) > 1) {
+        cleanValue = "0" + cleanValue;
+      }
+      if (cleanValue.length >= 2) {
+        const month = parseInt(cleanValue.substring(0, 2));
+        if (month > 12) cleanValue = "12" + cleanValue.substring(2);
+        if (cleanValue.substring(0, 2) === "00")
+          cleanValue = "01" + cleanValue.substring(2);
+        formattedValue =
+          cleanValue.substring(0, 2) +
+          (cleanValue.length > 2 ? "/" + cleanValue.substring(2, 4) : "");
+      } else {
+        formattedValue = cleanValue;
+      }
     } else if (name === "cvc") {
       formattedValue = value.replace(/\D/g, "");
     }
 
     setCardData((prev) => ({ ...prev, [name]: formattedValue }));
 
-    if (errors.card) {
-      setErrors((prev) => {
-        const newErrors = { ...prev };
+    setErrors((prev) => {
+      const newErrors = { ...prev };
+      const cardErrors: string[] = [];
+
+      if (name === "cvc" && formattedValue === "000") {
+        cardErrors.push("Invalid CVC code (cannot be 000)");
+      }
+
+      if (name === "expiryDate" && formattedValue.length === 5) {
+        const [m, y] = formattedValue.split("/").map((n) => parseInt(n, 10));
+        const now = new Date();
+        const curMonth = now.getMonth() + 1;
+        const curYear = parseInt(now.getFullYear().toString().slice(-2));
+
+        if (y < curYear || (y === curYear && m < curMonth)) {
+          cardErrors.push("Card has expired");
+        }
+      }
+
+      if (cardErrors.length > 0) {
+        newErrors.card = cardErrors;
+      } else {
         delete newErrors.card;
-        return newErrors;
-      });
-    }
+      }
+      return newErrors;
+    });
   };
 
   useEffect(() => {
@@ -119,9 +149,25 @@ export default function BookingContainer({ bike }: BookingContainerProps) {
       const cardErrors: string[] = [];
       if (cardData.cardNumber.replace(/\s/g, "").length < 16)
         cardErrors.push("Invalid card number");
-      if (!cardData.expiryDate.includes("/"))
-        cardErrors.push("Invalid expiry date");
-      if (cardData.cvc.length < 3) cardErrors.push("Invalid CVC");
+
+      const expiryParts = cardData.expiryDate.split("/");
+      if (expiryParts.length !== 2 || cardData.expiryDate.length !== 5) {
+        cardErrors.push("Invalid expiry date (MM/YY)");
+      } else {
+        const month = parseInt(expiryParts[0], 10);
+        const year = parseInt("20" + expiryParts[1], 10);
+        const now = new Date();
+        if (
+          year < now.getFullYear() ||
+          (year === now.getFullYear() && month < now.getMonth() + 1)
+        ) {
+          cardErrors.push("The card is expired");
+        }
+      }
+
+      if (cardData.cvc.length < 3 || cardData.cvc === "000") {
+        cardErrors.push("Invalid CVC code");
+      }
 
       if (cardErrors.length > 0) {
         setErrors((prev) => ({ ...prev, card: cardErrors }));
@@ -136,7 +182,6 @@ export default function BookingContainer({ bike }: BookingContainerProps) {
       Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)),
       1,
     );
-
     const accessoriesPrice = (dbAccessories || []).reduce((sum, acc) => {
       return options[acc.id] ? sum + Number(acc.pricePerDay) * days : sum;
     }, 0);
@@ -160,9 +205,7 @@ export default function BookingContainer({ bike }: BookingContainerProps) {
       });
 
       const result = await response.json();
-
       if (!response.ok) throw new Error(result.error || "Booking failed");
-
       setShowSuccess(true);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
