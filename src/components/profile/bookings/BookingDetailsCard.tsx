@@ -73,7 +73,7 @@ function getDurationInDays(startDate: string, endDate: string) {
   const utcStart = Date.UTC(
     start.getFullYear(),
     start.getMonth(),
-    start.getDate()
+    start.getDate(),
   );
   const utcEnd = Date.UTC(end.getFullYear(), end.getMonth(), end.getDate());
 
@@ -103,17 +103,13 @@ function BookingImage({ src, alt }: { src: string | null; alt: string }) {
   );
 }
 
-function DetailRow({
-  label,
-  value,
-}: {
-  label: string;
-  value: string;
-}) {
+function DetailRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-center justify-between gap-6 border-b border-gray-100 py-4 last:border-b-0">
       <span className="text-base text-gray-500">{label}</span>
-      <span className="text-right text-xl font-semibold text-black">{value}</span>
+      <span className="text-right text-xl font-semibold text-black">
+        {value}
+      </span>
     </div>
   );
 }
@@ -144,7 +140,7 @@ export default function BookingDetailsCard({ booking }: Props) {
 
         <span
           className={`inline-flex w-fit rounded-full px-4 py-2 text-sm font-medium ${getStatusBadgeStyles(
-            status
+            status,
           )}`}
         >
           {getStatusLabel(status)}
@@ -158,7 +154,10 @@ export default function BookingDetailsCard({ booking }: Props) {
           <div className="rounded-2xl bg-gray-50 px-5 py-2">
             <DetailRow label="Pick-up" value={booking.startDate} />
             <DetailRow label="Return" value={booking.endDate} />
-            <DetailRow label="Total paid" value={formatMoney(booking.totalPrice)} />
+            <DetailRow
+              label="Total paid"
+              value={formatMoney(booking.totalPrice)}
+            />
           </div>
 
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -177,18 +176,6 @@ export default function BookingDetailsCard({ booking }: Props) {
             </div>
           </div>
 
-          
-        </div>
-
-        {booking.bike.description && (
-            <section className="rounded-2xl border border-gray-200 p-5">
-              <h2 className="mb-3 text-lg font-semibold">Bike description</h2>
-              <p className="leading-7 text-gray-600">
-                {booking.bike.description}
-              </p>
-            </section>
-          )}
-
           <section className="rounded-2xl border border-gray-200 p-5">
             <div className="mb-4 flex items-center justify-between gap-4">
               <h2 className="text-lg font-semibold">Accessories</h2>
@@ -200,7 +187,7 @@ export default function BookingDetailsCard({ booking }: Props) {
             </div>
 
             {booking.accessories.length === 0 ? (
-              <div className="rounded-2xl  p-4 text-gray-500">
+              <div className="rounded-2xl p-4 text-gray-500">
                 No accessories added to this booking.
               </div>
             ) : (
@@ -226,9 +213,16 @@ export default function BookingDetailsCard({ booking }: Props) {
               </div>
             )}
           </section>
+        </div>
 
-          
-        
+        {booking.bike.description && (
+          <section className="rounded-2xl border border-gray-200 p-5">
+            <h2 className="mb-3 text-lg font-semibold">Bike description</h2>
+            <p className="leading-7 text-gray-600">
+              {booking.bike.description}
+            </p>
+          </section>
+        )}
       </div>
     </article>
   );
