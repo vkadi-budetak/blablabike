@@ -20,6 +20,14 @@ export async function GET(req: Request) {
       return NextResponse.json({ available: true });
     }
 
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const start = new Date(startDate);
+
+    if (start < today) {
+      return NextResponse.json({ available: false, error: "Past date" });
+    }
+
     const existingBookings = await db
       .select()
       .from(bookings)
@@ -37,7 +45,10 @@ export async function GET(req: Request) {
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json(
+      { available: false, error: error.message },
+      { status: 500 },
+    );
   }
 }
 
@@ -78,6 +89,26 @@ export async function POST(req: Request) {
     const { firstName, lastName, email, phone, startDate, endDate } =
       validation.data;
     const { bikeId, totalPrice, bookingAccessories: selectedIds } = body;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    if (start < today) {
+      return NextResponse.json(
+        { error: "Booking date cannot be in the past." },
+        { status: 400 },
+      );
+    }
+
+    if (end <= start) {
+      return NextResponse.json(
+        { error: "End date must be after start date." },
+        { status: 400 },
+      );
+    }
 
     const existingBookings = await db
       .select()

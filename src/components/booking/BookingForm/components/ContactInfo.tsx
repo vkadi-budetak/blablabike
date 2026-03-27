@@ -1,12 +1,52 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const ContactInfo = ({ contactData, setContactData, errors }: any) => {
+"use client";
+
+import React from "react";
+
+interface ContactInfoProps {
+  contactData: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+  };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  setContactData: (e: any) => void;
+  errors?: Record<string, string[]>;
+}
+
+export const ContactInfo = ({
+  contactData,
+  setContactData,
+  errors,
+}: ContactInfoProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    if (name === "phone") {
+      const cleanedValue = value.replace(/[^\d+]/g, "");
+
+      const syntheticEvent = {
+        ...e,
+        target: {
+          ...e.target,
+          name: "phone",
+          value: cleanedValue,
+        },
+      };
+
+      setContactData(syntheticEvent);
+      return;
+    }
+
+    // Для всіх інших полів передаємо подію як є
     setContactData(e);
   };
 
   return (
     <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm">
-      <h3 className="text-xl font-semibold mb-6">Contact Information</h3>
+      <h3 className="text-xl font-semibold mb-6 text-zinc-900">
+        Contact Information
+      </h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div className="flex flex-col gap-1">
           <input
@@ -47,6 +87,7 @@ export const ContactInfo = ({ contactData, setContactData, errors }: any) => {
             </p>
           )}
         </div>
+
         <div className="flex flex-col gap-1">
           <input
             type="email"
@@ -66,6 +107,7 @@ export const ContactInfo = ({ contactData, setContactData, errors }: any) => {
             </p>
           )}
         </div>
+
         <div className="flex flex-col gap-1">
           <input
             type="tel"
