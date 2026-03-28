@@ -157,12 +157,20 @@ export default async function BikeDetailPage({ params, searchParams }: PageProps
                     </button>
                   </Link>
                 ) : (
+                  <div className="space-y-4">
+                  <div className="bg-red-50 border border-red-100 p-4 rounded-xl">
+        <p className="text-red-600 text-[11px] font-black uppercase tracking-widest text-center leading-relaxed">
+          Booking is currently unavailable <br /> for this bike
+        </p>
+      </div>
+                  
                   <button
                     disabled
                     className="w-full bg-gray-100 text-gray-400 py-6 rounded-2xl font-black uppercase tracking-widest text-sm cursor-not-allowed border border-gray-200"
                   >
                     Not Available
                   </button>
+                  </div>
                 )}
               </div>
 
