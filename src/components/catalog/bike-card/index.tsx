@@ -51,7 +51,7 @@ export default function BikeCard({ bike, searchParams }: BikeCardProps) {
             <span className="text-gray-500 font-medium">{bike.model}</span>
           </h3>
 
-          <p className="text-gray-600 mt-2 text-sm line-clamp-2 grow">
+          <p className="mt-2 min-h-[40px] text-sm text-gray-600 line-clamp-2">
             {bike.description || "No description available"}
           </p>
 
